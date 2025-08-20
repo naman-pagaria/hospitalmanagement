@@ -1,0 +1,31 @@
+{% extends "hospital/homebase.html" %}
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+  <h1 class="fw-bold">Admin</h1>
+  <p class="text-muted">Choose how you want to continue.</p>
+</section>
+
+<div class="row g-4">
+  <!-- Admin Login -->
+  <div class="col-md-6">
+    <div class="card role-card h-100 p-4 text-center">
+      <i class="fas fa-right-to-bracket fa-3x text-primary mb-3"></i>
+      <h5 class="fw-semibold mb-1">Login</h5>
+      <p class="text-muted small">Access your admin dashboard and manage hospital operations.</p>
+      <a href="{% url 'adminlogin' %}" class="btn btn-primary mt-2">Admin Login</a>
+    </div>
+  </div>
+
+  <!-- Admin Signup -->
+  <div class="col-md-6">
+    <div class="card role-card h-100 p-4 text-center">
+      <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+      <h5 class="fw-semibold mb-1">Sign Up</h5>
+      <p class="text-muted small">Create a new admin account to get started.</p>
+      <a href="{% url 'adminsignup' %}" class="btn btn-outline-primary mt-2">Admin Sign Up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'hospital/patient_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center bg-light" style="min-height: 80vh;">
+  <div class="card shadow-sm rounded-4 p-4 w-100" style="max-width: 480px;">
+    {% if message %}
+    <div class="alert alert-danger alert-dismissible fade show bg-danger bg-opacity-10 border-danger border rounded-3 mb-3 py-2" role="alert" style="font-size: 0.9rem;">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="text-center mb-3 d-flex flex-column align-items-center gap-2">
+      <div class="d-flex justify-content-center align-items-center rounded-circle bg-primary bg-opacity-10" style="width: 40px; height: 40px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#0d6efd" class="bi bi-calendar3" viewBox="0 0 16 16" aria-hidden="true" focusable="false" role="img" aria-label="Calendar icon">
+          <path d="M14 3h-1V1.5a.5.5 0 0 0-1 0V3H4V1.5a.5.5 0 0 0-1 0V3H2a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM1 6v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6H1z"/>
+          <path d="M3.5 8a.5.5 0 0 1 .5.5V10a.5.5 0 0 1-1 0v-1.5a.5.5 0 0 1 .5-.5zM7 8a.5.5 0 0 1 .5.5V10a.5.5 0 0 1-1 0v-1.5A.5.5 0 0 1 7 8zm3.5 0a.5.5 0 0 1 .5.5V10a.5.5 0 0 1-1 0v-1.5a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+      </div>
+      <h4 class="fw-light text-primary mb-0" style="font-size: 1.125rem;">Book Appointment</h4>
+    </div>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-floating mb-3">
+        {% render_field appointmentForm.description class="form-control rounded-3" placeholder="Description" aria-label="Description" style="font-size: 0.875rem; height: 42px; padding-top: 1rem; padding-bottom: 0.25rem;" %}
+        <label for="{{ appointmentForm.description.id_for_label }}" class="small" style="font-size: 0.875rem; padding-left: 0.75rem;">Description</label>
+      </div>
+      <div class="form-floating mb-3">
+        <select name="{{ appointmentForm.doctorId.name }}" id="{{ appointmentForm.doctorId.id_for_label }}" class="form-select form-select-sm rounded-3 text-muted" aria-label="Select Doctor" style="height: 42px; font-size: 0.875rem; padding-top: 0.25rem; padding-bottom: 0.25rem;">
+          <option value="" disabled selected hidden style="color: #6c757d;">Select</option>
+          {% for val, text in appointmentForm.doctorId.field.choices %}
+            {% if val %}
+              <option value="{{ val }}">{{ text }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <label for="{{ appointmentForm.doctorId.id_for_label }}" class="small" style="font-size: 0.875rem; padding-left: 0.75rem;">Select Doctor</label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm rounded-pill w-100 fw-semibold" aria-label="Submit Book Appointment Form" style="font-size: 0.9rem; height: 42px; transition: background-color 0.3s ease;">
+        Book Appointment
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  button.btn-primary:hover {
+    background-color: #0b5ed7 !important;
+  }
+  select.form-select option[disabled] {
+    color: #6c757d;
+  }
+  .form-floating > label {
+    line-height: 1.2;
+  }
+  .form-floating > .form-control,
+  .form-floating > .form-select {
+    font-size: 0.875rem;
+  }
+</style>
+
+{% endblock content %}

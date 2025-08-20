@@ -1,0 +1,45 @@
+{% extends "hospital/homebase.html" %}
+{% load static %}
+
+{% block title %}Hospital Management{% endblock %}
+
+{% block content %}
+<section class="hero text-center">
+  <h1 class="display-5 fw-bold mb-3">Hospital Management System</h1>
+  <p class="lead text-muted mb-4">
+    Streamline hospital operations — from appointments to patient care — all in one secure platform.
+  </p>
+</section>
+
+<div class="row g-4 mt-4">
+  <!-- Admin -->
+  <div class="col-md-4">
+    <div class="card role-card text-center p-4 h-100">
+      <i class="fas fa-user-shield fa-3x text-primary mb-3"></i>
+      <h5 class="fw-semibold">Admin</h5>
+      <p class="text-muted small">Manage doctors, patients, and hospital resources.</p>
+      <a href="{% url 'adminclick' %}" class="stretched-link"></a>
+    </div>
+  </div>
+
+  <!-- Doctor -->
+  <div class="col-md-4">
+    <div class="card role-card text-center p-4 h-100">
+      <i class="fas fa-user-md fa-3x text-success mb-3"></i>
+      <h5 class="fw-semibold">Doctor</h5>
+      <p class="text-muted small">Access appointments and manage patient care records.</p>
+      <a href="{% url 'doctorclick' %}" class="stretched-link"></a>
+    </div>
+  </div>
+
+  <!-- Patient -->
+  <div class="col-md-4">
+    <div class="card role-card text-center p-4 h-100">
+      <i class="fas fa-hospital-user fa-3x text-danger mb-3"></i>
+      <h5 class="fw-semibold">Patient</h5>
+      <p class="text-muted small">Book appointments and track your health history.</p>
+      <a href="{% url 'patientclick' %}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

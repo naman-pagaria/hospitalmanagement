@@ -1,0 +1,154 @@
+/* ---------- minimal theme ---------- */
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --radius: 14px;
+  --shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--text); }
+
+/* content width for calm layout */
+.container-narrow { max-width: 980px; }
+
+/* components */
+.card {
+  border: 0;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.btn { border-radius: 10px; }
+
+/* forms */
+.form-control, .form-select { border-radius: 10px; }
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+  border-color: rgba(13,110,253,.35);
+}
+
+/* tables */
+.table {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.table thead th { font-weight: 600; }
+
+/* hero (simple, image-free by default) */
+.hero { padding: 56px 0; text-align: center; }
+.hero h1 { font-weight: 700; letter-spacing: -0.02em; }
+.hero p { color: var(--muted); }
+
+/* role cards */
+.role-card {
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.role-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+}
+
+/* links */
+a { text-decoration: none; }
+
+/* --- subtle page background (soft blobs + faint grid) --- */
+.page-decor {
+  position: fixed;
+  inset: 0;
+  z-index: -1;          /* keep it behind everything */
+  pointer-events: none;
+
+  /* soft color blobs */
+  background:
+    radial-gradient(1000px 480px at 10% -10%, rgba(13,110,253,.08), transparent 60%),
+    radial-gradient(700px 360px at 110% 0%, rgba(32,201,151,.08), transparent 60%),
+    radial-gradient(600px 320px at 50% 120%, rgba(111,66,193,.06), transparent 65%),
+    linear-gradient(#f6f7fb, #f6f7fb);  /* base */
+}
+
+/* optional: faint dotted grid that fades downward */
+.page-decor::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(17,24,39,.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+  /* fade so it doesn't overpower content */
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 70%);
+          mask-image: linear-gradient(to bottom, black, transparent 70%);
+}
+
+/* --- Hero with subtle background image --- */
+.hero.hero-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  padding: 96px 20px;           /* a bit taller so it feels intentional */
+  backdrop-filter: none;        /* ensure no double blur on content */
+  isolation: isolate;           /* keep pseudo elements below text */
+}
+
+/* blurred photo layer */
+.hero.hero-image::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--hero-img);
+  background-size: cover;
+  background-position: center;
+  filter: blur(6px) saturate(105%);
+  transform: scale(1.04);       /* avoid edge blur clipping */
+  z-index: -2;
+}
+
+/* soft gradient veil for readability */
+.hero.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(1200px 520px at 50% -10%, rgba(255,255,255,.9), transparent 65%),
+              linear-gradient(180deg, rgba(246,247,251,.85), rgba(246,247,251,.95));
+  z-index: -1;
+}
+
+/* tighten hero text color contrast */
+.hero.hero-image h1 { color: #0b1220; }
+.hero.hero-image p  { color: #5f6b7a; }
+
+/* slimmer hero for click pages */
+.hero-slim { padding: 56px 0 28px; }
+
+/* subtle divider */
+.soft-divider{
+  height:1px;
+  max-width:720px;
+  margin: 16px auto 24px;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,.08), transparent);
+}
+
+/* slimmer hero for click pages */
+.hero-slim { padding: 56px 0 28px; }
+
+/* subtle divider line */
+.soft-divider{
+  height:1px;
+  max-width:720px;
+  margin:16px auto 24px;
+  background:linear-gradient(to right, transparent, rgba(0,0,0,.08), transparent);
+}
+
+.navbar .nav-link.active { font-weight: 600; }
+.navbar .nav-link { transition: opacity .15s ease; }
+.navbar .nav-link:hover { opacity: .75; }
+
+form .form-control:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* make the dotted background visible site-wide */
+body { background: var(--bg); }

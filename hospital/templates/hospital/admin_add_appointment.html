@@ -1,0 +1,76 @@
+
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-6">
+      <div class="card shadow rounded-4 overflow-hidden">
+
+        <!-- Header -->
+        <div class="bg-brand text-white text-center p-4">
+          <div class="icon-badge mx-auto mb-2 d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i>
+          </div>
+          <h5 class="mb-0 fw-semibold">Book Appointment</h5>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4">
+          {% if appointmentForm.non_field_errors %}
+            <div class="alert alert-danger small mb-3" role="alert">
+              {{ appointmentForm.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <form method="post" class="d-grid gap-3" novalidate>
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small fw-semibold">Description</label>
+                {% render_field appointmentForm.description class="form-control form-control-sm rounded-3" placeholder="Short description" %}
+                {% for e in appointmentForm.description.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Doctor</label>
+                {% render_field appointmentForm.doctorId class="form-select form-select-sm rounded-3" %}
+                {% for e in appointmentForm.doctorId.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Patient</label>
+                {% render_field appointmentForm.patientId class="form-select form-select-sm rounded-3" %}
+                {% for e in appointmentForm.patientId.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-brand rounded-pill fw-semibold py-2">Schedule Appointment</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-brand{
+    background: linear-gradient(90deg, #0d6efd 0%, #0b5ed7 100%);
+  }
+  .btn-brand{
+    background: linear-gradient(90deg, #0d6efd 0%, #0b5ed7 100%);
+    color:#fff;
+    transition: filter .2s ease-in-out;
+  }
+  .btn-brand:hover{ filter: brightness(0.95); color:#fff; }
+  .icon-badge{
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,.15); font-size: 1.25rem;
+  }
+  .form-control, .form-select{ font-size: .9rem; }
+</style>
+
+{% endblock content %}

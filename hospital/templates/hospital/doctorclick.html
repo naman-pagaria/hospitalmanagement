@@ -1,0 +1,31 @@
+{% extends "hospital/homebase.html" %}
+{% block title %}Doctor{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+  <h1 class="fw-bold">Doctor</h1>
+  <p class="text-muted">Choose how you want to continue.</p>
+</section>
+
+<div class="row g-4">
+  <!-- Doctor Login -->
+  <div class="col-md-6">
+    <div class="card role-card h-100 p-4 text-center">
+      <i class="fas fa-right-to-bracket fa-3x text-success mb-3"></i>
+      <h5 class="fw-semibold mb-1">Login</h5>
+      <p class="text-muted small">Access your doctor dashboard and manage appointments.</p>
+      <a href="{% url 'doctorlogin' %}" class="btn btn-success mt-2">Doctor Login</a>
+    </div>
+  </div>
+
+  <!-- Doctor Signup -->
+  <div class="col-md-6">
+    <div class="card role-card h-100 p-4 text-center">
+      <i class="fas fa-user-plus fa-3x text-success mb-3"></i>
+      <h5 class="fw-semibold mb-1">Sign Up</h5>
+      <p class="text-muted small">Create a new doctor account to get started.</p>
+      <a href="{% url 'doctorsignup' %}" class="btn btn-outline-success mt-2">Doctor Sign Up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

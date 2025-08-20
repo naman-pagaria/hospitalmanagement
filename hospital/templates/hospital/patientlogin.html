@@ -1,0 +1,30 @@
+{% extends "hospital/login_signup_base.html" %}
+{% block title %}Patient Login{% endblock %}
+
+{% block content %}
+<h2 class="text-center"><i class="fas fa-procedures me-2 text-danger"></i>Patient Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {# ensure we land on the dashboard after login #}
+  {% if next %}
+    <input type="hidden" name="next" value="{{ next }}">
+  {% else %}
+    <input type="hidden" name="next" value="{% url 'patient-dashboard' %}">
+  {% endif %}
+
+  {% if next %}
+  <input type="hidden" name="next" value="{{ next }}">
+{% else %}
+  <input type="hidden" name="next" value="{% url 'patient-dashboard' %}">
+{% endif %}
+
+  <div class="d-grid mt-3">
+    <button type="submit" class="btn btn-danger">Login</button>
+  </div>
+</form>
+<div class="text-center mt-3">
+  <small>Don't have an account? <a href="{% url 'patientsignup' %}">Sign up</a></small>
+</div>
+{% endblock %}

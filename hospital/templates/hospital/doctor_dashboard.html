@@ -1,0 +1,173 @@
+{% extends "hospital/admin_base.html" %}
+{% load static %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+
+<h1 class="h4 fw-bold mb-4">Doctor Dashboard</h1>
+
+<!-- Summary cards: use legacy keys first (for includes/consistency), fallback to new keys -->
+<div class="row g-4 mb-4">
+  <!-- My Patients -->
+  <div class="col-6 col-md-4">
+    <div class="card p-3 role-card h-100 position-relative">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-hospital-user fa-lg text-success me-3"></i>
+        <div>
+          <div class="text-muted small">My Patients</div>
+          {% firstof patientcount patients_count "0" as my_patients %}
+          <div class="fs-4 fw-semibold">{{ my_patients }}</div>
+        </div>
+      </div>
+      <a href="{% url 'doctor-view-patient' %}" class="stretched-link" aria-label="Open My Patients"></a>
+    </div>
+  </div>
+
+  <!-- Approved Appointments -->
+  <div class="col-6 col-md-4">
+    <div class="card p-3 role-card h-100 position-relative">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-calendar-check fa-lg text-primary me-3"></i>
+        <div>
+          <div class="text-muted small">Approved</div>
+          {% firstof appointmentcount appointments_count "0" as approved_count %}
+          <div class="fs-4 fw-semibold">{{ approved_count }}</div>
+        </div>
+      </div>
+      <a href="{% url 'doctor-view-appointment' %}" class="stretched-link" aria-label="View approved appointments"></a>
+    </div>
+  </div>
+
+  <!-- Discharged (legacy metric) or Pending as fallback -->
+  <div class="col-6 col-md-4">
+    <div class="card p-3 role-card h-100 position-relative">
+      <div class="d-flex align-items-center">
+        <i class="fa-solid fa-heart-pulse fa-lg text-danger me-3"></i>
+        <div>
+          <div class="text-muted small">Discharged Patients</div>
+          {% firstof patientdischarged pending_count "0" as misc_count %}
+          <div class="fs-4 fw-semibold">{{ misc_count }}</div>
+        </div>
+      </div>
+      <a href="{% url 'doctor-view-discharge-patient' %}" class="stretched-link" aria-label="View discharged patients"></a>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Recent appointments -->
+  <div class="col-lg-8">
+    <div class="card p-3 h-100">
+      <div class="d-flex align-items-center mb-2">
+        <i class="fa-solid fa-bell me-2 text-primary"></i>
+        <h2 class="h6 m-0">Recent Appointments</h2>
+      </div>
+
+      {% if recent_rows %}
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr class="text-muted">
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th class="d-none d-md-table-cell">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in recent_rows %}
+                <tr>
+                  <td class="text-truncate">{{ r.patient_name|default:"—" }}</td>
+                  <td>{{ r.date|default:"—" }}</td>
+                  <td>
+                    {% if r.is_pending %}
+                      <span class="badge text-bg-warning">Pending</span>
+                    {% else %}
+                      <span class="badge text-bg-success">Approved</span>
+                    {% endif %}
+                  </td>
+                  <td class="d-none d-md-table-cell text-truncate" style="max-width: 240px;">{{ r.description|default:"" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% elif recent_appointments or appointments %}
+        {# Fallback to legacy context keys, in case the view hasn't been updated yet #}
+        {% with items=recent_appointments|default:appointments %}
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead>
+                <tr class="text-muted">
+                  <th>Patient</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th class="d-none d-md-table-cell">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for a in items %}
+                  <tr>
+                    <td class="text-truncate">
+                      {% if a.patientName %}
+                        {{ a.patientName }}
+                      {% elif a.patient %}
+                        {% if a.patient.get_name %}{{ a.patient.get_name }}{% elif a.patient.name %}{{ a.patient.name }}{% elif a.patient.user %}{{ a.patient.user.get_full_name }}{% else %}—{% endif %}
+                      {% elif a.patientId %}
+                        {% if a.patientId.get_name %}{{ a.patientId.get_name }}{% elif a.patientId.name %}{{ a.patientId.name }}{% else %}—{% endif %}
+                      {% else %}
+                        —
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if a.appointmentDate %}
+                        {{ a.appointmentDate|date:"M d, Y" }}
+                      {% elif a.date %}
+                        {{ a.date|date:"M d, Y" }}
+                      {% else %}
+                        —
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if a.status == True or a.status == 1 or a.status == 'Approved' or a.status == 'approved' %}
+                        <span class="badge text-bg-success">Approved</span>
+                      {% elif a.status == False or a.status == 0 or a.status == 'Pending' or a.status == 'pending' %}
+                        <span class="badge text-bg-warning">Pending</span>
+                      {% else %}
+                        <span class="badge text-bg-secondary">{{ a.status }}</span>
+                      {% endif %}
+                    </td>
+                    <td class="d-none d-md-table-cell text-truncate" style="max-width: 240px;">{{ a.description|default:"" }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endwith %}
+      {% else %}
+        <div class="text-muted small">No recent appointments.</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="col-lg-4">
+    <div class="card p-3 h-100">
+      <div class="d-flex align-items-center mb-2">
+        <i class="fa-solid fa-bolt me-2 text-success"></i>
+        <h2 class="h6 m-0">Quick Actions</h2>
+      </div>
+      <div class="d-grid gap-2">
+        <a class="btn btn-outline-primary" href="{% url 'doctor-dashboard' %}">
+          <i class="fa-solid fa-rotate me-2"></i>Refresh Dashboard
+        </a>
+        <a class="btn btn-outline-primary" href="{% url 'doctor-view-appointment' %}">
+          <i class="fa-solid fa-calendar-days me-2"></i>View All Appointments
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

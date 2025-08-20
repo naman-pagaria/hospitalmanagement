@@ -1,0 +1,90 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="py-4 bg-body-tertiary">
+  <div class="container-xl">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+      <!-- Header -->
+      <div class="bg-primary bg-gradient text-white p-3">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+          <div class="d-flex align-items-center gap-2">
+            <span class="d-inline-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10" style="width:44px;height:44px;">
+              <i class="fa-solid fa-user-pen" style="font-size:1.25rem;"></i>
+            </span>
+            <div>
+              <div class="small text-white-50 fw-medium" style="font-size:0.85rem;">Admin</div>
+              <h1 class="fw-semibold h5 m-0">Update Patient</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                {% render_field userForm.first_name class="form-control" placeholder="First name" %}
+                <label for="{{ userForm.first_name.id_for_label }}">First name</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                {% render_field userForm.last_name class="form-control" placeholder="Last name" %}
+                <label for="{{ userForm.last_name.id_for_label }}">Last name</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                {% render_field userForm.username class="form-control" placeholder="Username" %}
+                <label for="{{ userForm.username.id_for_label }}">Username</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                {% render_field userForm.password class="form-control" placeholder="Password" %}
+                <label for="{{ userForm.password.id_for_label }}">Password</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-floating">
+                {% render_field patientForm.mobile class="form-control" placeholder="Mobile" %}
+                <label for="{{ patientForm.mobile.id_for_label }}">Mobile</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                {% render_field patientForm.symptoms class="form-control" placeholder="Symptoms" %}
+                <label for="{{ patientForm.symptoms.id_for_label }}">Symptoms</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-floating">
+                {# Render select with a blank placeholder option if needed #}
+                {% render_field patientForm.assignedDoctorId class="form-select" %}
+                <label for="{{ patientForm.assignedDoctorId.id_for_label }}">Assigned Doctor</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button type="submit" class="btn btn-primary rounded-pill px-4">
+              <i class="fa-solid fa-floppy-disk me-1"></i> Update
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

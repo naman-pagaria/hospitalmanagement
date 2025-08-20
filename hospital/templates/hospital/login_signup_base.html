@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Auth Page{% endblock %} - Hospital Management</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Your custom CSS -->
+  <link href="{% static 'hospital/style.css' %}" rel="stylesheet">
+
+  <style>
+    /* Page background (soft blobs + faint dotted grid) */
+    .page-decor {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background:
+        radial-gradient(900px 420px at 8% -10%, rgba(13,110,253,.10), transparent 60%),
+        radial-gradient(700px 360px at 110% 0%, rgba(32,201,151,.10), transparent 60%),
+        radial-gradient(600px 320px at 50% 120%, rgba(111,66,193,.08), transparent 65%),
+        linear-gradient(#f6f7fb, #f6f7fb);
+    }
+    .page-decor::after{
+      content:"";
+      position:absolute; inset:0;
+      background-image: radial-gradient(rgba(17,24,39,.06) 1px, transparent 1px);
+      background-size: 22px 22px;
+      -webkit-mask-image: linear-gradient(to bottom, black, transparent 75%);
+              mask-image: linear-gradient(to bottom, black, transparent 75%);
+    }
+
+    /* Shell layout */
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: transparent; /* decor sits behind */
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+    .auth-shell{
+      width:100%;
+      max-width: 980px;
+      margin-inline:auto;
+      padding: 24px;
+    }
+    .auth-card{
+      background:#fff;
+      border-radius:14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+      padding: 28px;
+      width:100%;
+      max-width: 440px;
+      margin-inline:auto;
+    }
+    .auth-card h2{ font-weight: 800; font-size: 1.6rem; margin-bottom: 1rem; color:#0f172a; }
+    .auth-card .form-control{ border-radius:10px; padding:.75rem; }
+    .auth-card .btn{ border-radius:10px; padding:.75rem; }
+
+    /* Illustration / message panel (shown on md+) */
+    .auth-aside{
+      display:none;
+    }
+    @media (min-width: 768px){
+      .auth-aside{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding: 32px;
+        border-radius:14px;
+        background: linear-gradient(145deg, rgba(255,255,255,.65), rgba(255,255,255,.35));
+        box-shadow: 0 10px 30px rgba(0,0,0,.05);
+        backdrop-filter: blur(8px);
+      }
+      .auth-card{
+        margin-inline:0; /* side-by-side on md+ */
+      }
+    }
+
+    /* Tiny SVG illustration sits nicely */
+    .illustration{
+      width: 240px;
+      max-width: 100%;
+      height: auto;
+      opacity: .9;
+      margin-bottom: 16px;
+    }
+    .aside-title{ font-weight:800; font-size:1.4rem; color:#0f172a; }
+    .aside-sub{ color:#475569; }
+  </style>
+</head>
+<body>
+  <div class="page-decor"></div>
+
+  <div class="auth-shell">
+    <div class="row g-4 align-items-center">
+      <!-- Left: friendly illustration / message (hidden on mobile) -->
+      <div class="col-md-6">
+        <div class="auth-aside h-100">
+          <div class="text-center text-md-start">
+            <!-- Simple inline SVG (no external asset needed) -->
+            <svg class="illustration" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="25" width="100" height="70" rx="12" fill="#e9f2ff"/>
+              <rect x="22" y="37" width="44" height="8" rx="4" fill="#cfe2ff"/>
+              <rect x="22" y="52" width="76" height="8" rx="4" fill="#d6f5ea"/>
+              <rect x="22" y="67" width="60" height="8" rx="4" fill="#eadcf7"/>
+              <circle cx="86" cy="44" r="16" fill="#0d6efd" opacity=".10"/>
+              <path d="M86 36v16M78 44h16" stroke="#0d6efd" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <div class="aside-title mb-1">Welcome back</div>
+            <div class="aside-sub">Sign in to manage appointments, staff, and patients securely.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: the actual form card from child templates -->
+      <div class="col-md-6">
+        <div class="auth-card">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

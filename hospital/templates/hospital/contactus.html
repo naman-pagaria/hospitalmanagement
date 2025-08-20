@@ -1,0 +1,67 @@
+{% extends "hospital/homebase.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+  <h1 class="fw-bold">Contact us</h1>
+  <p class="text-muted">Questions, feedback, or a feature request? Send us a note.</p>
+</section>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card p-4">
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if messages %}
+          {% for m in messages %}
+            <div class="alert alert-{{ m.tags|default:'info' }} mb-3">{{ m }}</div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Your name</label>
+          <input type="text" name="name" required class="form-control" placeholder="Jane Doe">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Email</label>
+          <input type="email" name="email" required class="form-control" placeholder="you@example.com">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">Message</label>
+          <textarea name="message" rows="5" required class="form-control" placeholder="How can we help?"></textarea>
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Send message</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card p-4 h-100">
+      <h6 class="fw-semibold mb-2">Support</h6>
+      <p class="text-muted mb-4">We typically reply within one business day.</p>
+
+      <div class="d-flex align-items-start gap-3 mb-3">
+        <i class="fa-solid fa-envelope mt-1 text-primary"></i>
+        <div>
+          <div class="fw-semibold">Email</div>
+          <div class="text-muted small">support@example.com</div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-start gap-3">
+        <i class="fa-solid fa-location-dot mt-1 text-primary"></i>
+        <div>
+          <div class="fw-semibold">Office</div>
+          <div class="text-muted small">123 Health St, Care City</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

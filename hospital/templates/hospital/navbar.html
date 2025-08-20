@@ -1,0 +1,74 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top" style="z-index:1030;">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
+      <i class="fa-solid fa-heart-pulse me-2 text-primary"></i>Hospital
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <!-- Left -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'aboutus' %}">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'contactus' %}">Contact</a></li>
+      </ul>
+
+      <!-- Right -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <!-- Dashboards dropdown (show all 3; simplest & always available) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dashDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-gauge-high me-1"></i>Dashboards
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dashDropdown">
+              <li><a class="dropdown-item" href="{% url 'admin-dashboard' %}">Admin Dashboard</a></li>
+              <li><a class="dropdown-item" href="{% url 'doctor-dashboard' %}">Doctor Dashboard</a></li>
+              <li><a class="dropdown-item" href="{% url 'patient-dashboard' %}">Patient Dashboard</a></li>
+            </ul>
+          </li>
+
+          <!-- Logout (POST) -->
+          <li class="nav-item ms-lg-2">
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-secondary">
+                <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+              </button>
+            </form>
+          </li>
+        {% else %}
+          <!-- Login & Sign up dropdowns -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-right-to-bracket me-1"></i>Login
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
+              <li><a class="dropdown-item" href="{% url 'adminlogin' %}">Admin Login</a></li>
+              <li><a class="dropdown-item" href="{% url 'doctorlogin' %}">Doctor Login</a></li>
+              <li><a class="dropdown-item" href="{% url 'patientlogin' %}">Patient Login</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown ms-lg-2">
+            <a class="nav-link dropdown-toggle" href="#" id="signupDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-user-plus me-1"></i>Sign up
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="signupDropdown">
+              <li><a class="dropdown-item" href="{% url 'adminsignup' %}">Admin Sign up</a></li>
+              <li><a class="dropdown-item" href="{% url 'doctorsignup' %}">Doctor Sign up</a></li>
+              <li><a class="dropdown-item" href="{% url 'patientsignup' %}">Patient Sign up</a></li>
+            </ul>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,29 @@
+{% extends "hospital/homebase.html" %}
+{% block title %}Patient{% endblock %}
+
+{% block content %}
+<section class="text-center mb-4">
+  <h1 class="fw-bold">Patient</h1>
+  <p class="text-muted">Choose how you want to continue.</p>
+</section>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card role-card h-100 p-4 text-center">
+      <i class="fas fa-hospital-user fa-3x text-danger mb-3"></i>
+      <h5 class="fw-semibold mb-1">Login</h5>
+      <p class="text-muted small">Book appointments and view your medical history.</p>
+      <a href="{% url 'patientlogin' %}" class="btn btn-danger mt-2">Patient Login</a>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card role-card h-100 p-4 text-center">
+      <i class="fas fa-user-plus fa-3x text-danger mb-3"></i>
+      <h5 class="fw-semibold mb-1">Sign Up</h5>
+      <p class="text-muted small">Create an account to book and manage appointments.</p>
+      <a href="{% url 'patientsignup' %}" class="btn btn-outline-danger mt-2">Patient Sign Up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

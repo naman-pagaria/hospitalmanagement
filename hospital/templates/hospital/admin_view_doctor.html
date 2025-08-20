@@ -1,0 +1,172 @@
+{% extends 'hospital/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="py-4 bg-body-tertiary">
+  <div class="container-xl">
+    <div class="card shadow-sm rounded-4 border-0 overflow-hidden">
+
+      <!-- Toolbar -->
+      <div class="card-header bg-primary bg-opacity-10 border-0 py-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+          <!-- Title -->
+          <div class="d-flex align-items-center gap-2">
+            <span class="d-inline-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10" style="width:40px;height:40px;">
+              <i class="fa-solid fa-user-doctor text-primary" style="font-size:1.25rem;"></i>
+            </span>
+            <span class="fw-semibold">Admin</span>
+          </div>
+
+          <!-- Actions: search + add -->
+          <div class="d-flex align-items-center gap-2 flex-grow-1" style="max-width:680px;">
+            <div class="input-group input-group-sm flex-grow-1">
+              <span class="input-group-text bg-white border-end-0">
+                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+              </span>
+              <input id="doctorSearch" type="search" class="form-control border-start-0" placeholder="Search name, department, mobile" aria-label="Search doctors">
+            </div>
+            <a href="{% url 'admin-add-doctor' %}" class="btn btn-primary btn-compact rounded-pill d-flex align-items-center">
+              <i class="fa-solid fa-plus me-1"></i>
+              <span>Add</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card-body pt-0">
+        <div class="table-responsive rounded-3 border">
+          <table class="table table-hover table-sm align-middle mb-0" id="doctorTableWrap">
+            <thead class="table-light">
+              <tr class="text-muted small">
+                <th class="py-2" style="width:56px;">Profile</th>
+                <th class="py-2">Name</th>
+                <th class="py-2 d-none d-md-table-cell" style="width:160px;">Mobile</th>
+                <th class="py-2 d-none d-lg-table-cell" style="width:180px;">Department</th>
+                <th class="py-2" style="width:120px;">Status</th>
+                <th class="py-2 text-end" style="width:120px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="doctorTable">
+              {% for d in doctors %}
+                <tr data-row data-index="{{ d.get_name }} {{ d.department }} {{ d.mobile }}">
+                  <td class="py-2">
+                    {% if d.profile_pic %}
+                      <img src="{{ d.profile_pic.url }}" alt="{{ d.get_name }}" class="rounded-circle shadow-sm border border-1 border-secondary border-opacity-10 avatar" style="width:38px;height:38px;object-fit:cover;">
+                    {% else %}
+                      <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center shadow-sm border border-1 border-primary border-opacity-25 avatar" style="width:38px;height:38px;">
+                        <span class="text-primary avatar-fallback">{{ d.get_name|slice:":1"|upper }}</span>
+                      </div>
+                    {% endif %}
+                  </td>
+
+                  <td class="py-2">
+                    <div class="fw-semibold">{{ d.get_name }}</div>
+                    {% if d.department %}
+                      <div class="small text-muted d-lg-none">{{ d.department }}</div>
+                    {% endif %}
+                    {% if d.mobile %}
+                      <div class="small text-muted d-md-none">{{ d.mobile }}</div>
+                    {% endif %}
+                  </td>
+
+                  <td class="small text-nowrap d-none d-md-table-cell py-2">{{ d.mobile|default:"—" }}</td>
+
+                  <td class="small d-none d-lg-table-cell py-2">
+                    {% if d.department %}
+                      <span class="badge rounded-pill bg-primary-subtle text-primary border border-primary border-opacity-25 fw-semibold">{{ d.department }}</span>
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+
+                  <td class="small py-2">
+                    {% if d.status %}
+                      <span class="d-inline-flex align-items-center gap-2">
+                        <span class="status-dot status-approved"></span>
+                        <span>Approved</span>
+                      </span>
+                    {% else %}
+                      <span class="d-inline-flex align-items-center gap-2">
+                        <span class="status-dot status-pending"></span>
+                        <span>Pending</span>
+                      </span>
+                    {% endif %}
+                  </td>
+
+                  <td class="text-end py-2">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Doctor actions">
+                      <a class="btn btn-outline-secondary" href="{% url 'update-doctor' d.id %}" title="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                      </a>
+                      <a class="btn btn-outline-danger" href="{% url 'delete-doctor-from-hospital' d.id %}" title="Delete">
+                        <i class="fa-solid fa-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center text-body-secondary py-5">
+                    <div class="d-flex flex-column gap-2 align-items-center">
+                      <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+                        <i class="fa-solid fa-user-doctor text-primary"></i>
+                      </div>
+                      <div class="fw-medium">No doctors yet</div>
+                      <div class="small">Add your first doctor to get started.</div>
+                      <a href="{% url 'admin-add-doctor' %}" class="btn btn-primary btn-sm mt-1">
+                        <i class="fa-solid fa-plus me-1"></i> Add Doctor
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer bg-white border-0 py-3">
+        <div class="d-flex justify-content-between align-items-center small text-body-secondary">
+          <span><i class="fa-regular fa-circle-check me-1"></i>Showing {{ doctors|length }} result{% if doctors|length != 1 %}s{% endif %}</span>
+          <a href="#" class="link-secondary text-decoration-none" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+            Back to top <i class="fa-solid fa-arrow-up ms-1"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Compact primary button for header */
+  .btn-compact{ --bs-btn-padding-y:.3rem; --bs-btn-padding-x:.65rem; --bs-btn-font-size:.85rem; }
+
+  /* Avatar fallback */
+  .avatar-fallback{ font-size:.8rem; font-weight:700; }
+  .status-dot{ width:.5rem; height:.5rem; border-radius:50%; display:inline-block; }
+  .status-approved{ background:#198754; }
+  .status-pending{ background:#ffc107; }
+
+  /* Table sizing */
+  thead th{ font-size:.85rem; }
+  tbody td{ font-size:.95rem; }
+</style>
+
+<script>
+  (function(){
+    const input = document.getElementById('doctorSearch');
+    if(!input) return;
+    input.addEventListener('input', function(e){
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('#doctorTable tr[data-row]').forEach(function(tr){
+        const hay = (tr.getAttribute('data-index')||'').toLowerCase();
+        tr.classList.toggle('d-none', q && !hay.includes(q));
+      });
+    });
+  })();
+</script>
+
+{% endblock content %}

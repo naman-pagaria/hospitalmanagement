@@ -1,0 +1,97 @@
+{% extends "hospital/homebase.html" %}
+{% load static %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<section class="d-flex align-items-center justify-content-between mb-4">
+  <div>
+    <h1 class="h3 fw-bold mb-1">Patient Dashboard</h1>
+    <p class="text-muted mb-0">
+      Hello{% if patient %}, {{ patient.get_name }}{% endif %}.
+      {% if doctor %} Your assigned doctor is <strong>{{ doctor.get_name }}</strong> ({{ doctor.department }}).{% endif %}
+    </p>
+  </div>
+</section>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card p-4 h-100">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-calendar-check fa-2x me-3 text-primary"></i>
+        <div>
+          <div class="text-muted small">Your Appointments</div>
+          <div class="fs-4 fw-bold">{{ total_appointments }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if discharge %}
+  <div class="col-md-8">
+    <div class="card p-4 h-100">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-file-invoice-dollar fa-2x me-3 text-success"></i>
+        <div>
+          <div class="text-muted small">Latest Discharge</div>
+          <div class="fw-semibold">
+            Released on {{ discharge.releaseDate|date:"M d, Y" }} · Total: ₹{{ discharge.total }}
+          </div>
+          <a href="{% url 'download-pdf' patient.id %}" class="btn btn-sm btn-outline-success mt-2">
+            Download Bill
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Recent Appointments -->
+<div class="card mt-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Recent Appointments</h5>
+      <div class="d-flex gap-2">
+        <a href="{% url 'patient-book-appointment' %}" class="btn btn-sm btn-primary">
+          Book Appointment
+        </a>
+        <a href="{% url 'patient-view-appointment' %}" class="btn btn-sm btn-outline-primary">
+          View all
+        </a>
+      </div>
+    </div>
+
+    {% if recent_appointments %}
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Doctor</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ap in recent_appointments %}
+              <tr>
+                <td class="fw-medium">{{ ap.doctorName }}</td>
+                <td class="text-muted small">{{ ap.description|default:"—" }}</td>
+                <td>
+                  {% if ap.status %}
+                    <span class="badge bg-success-subtle text-success border border-success-subtle">Approved</span>
+                  {% else %}
+                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Pending</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted mb-0">No appointments yet. Book your first one!</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

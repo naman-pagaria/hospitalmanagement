@@ -1,0 +1,105 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-6">
+      <div class="card shadow rounded-4 overflow-hidden">
+
+        <!-- Header -->
+        <div class="bg-brand text-white text-center p-4">
+          <div class="icon-badge mx-auto mb-2 d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-hospital-user" aria-hidden="true"></i>
+          </div>
+          <h5 class="mb-0 fw-semibold">Admit Patient To Hospital</h5>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4">
+          {% if userForm.non_field_errors or patientForm.non_field_errors %}
+            <div class="alert alert-danger small mb-3" role="alert">
+              {{ userForm.non_field_errors }}{{ patientForm.non_field_errors }}
+            </div>
+          {% endif %}
+
+          <form method="post" class="d-grid gap-3">
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">First name</label>
+                {% render_field userForm.first_name class="form-control form-control-sm rounded-3" placeholder="First name" %}
+                {% for e in userForm.first_name.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Last name</label>
+                {% render_field userForm.last_name class="form-control form-control-sm rounded-3" placeholder="Last name" %}
+                {% for e in userForm.last_name.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Username</label>
+                {% render_field userForm.username class="form-control form-control-sm rounded-3" placeholder="Username" %}
+                {% for e in userForm.username.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Password</label>
+                {% render_field userForm.password class="form-control form-control-sm rounded-3" placeholder="Password" %}
+                {% for e in userForm.password.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Address</label>
+                {% render_field patientForm.address class="form-control form-control-sm rounded-3" placeholder="Address" %}
+                {% for e in patientForm.address.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Mobile</label>
+                {% render_field patientForm.mobile class="form-control form-control-sm rounded-3" placeholder="Mobile" %}
+                {% for e in patientForm.mobile.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Symptoms</label>
+                {% render_field patientForm.symptoms class="form-control form-control-sm rounded-3" placeholder="Symptoms" rows="2" %}
+                {% for e in patientForm.symptoms.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-semibold">Assign Doctor</label>
+                {% render_field patientForm.assignedDoctorId class="form-control form-control-sm rounded-3" placeholder="Doctor" %}
+                {% for e in patientForm.assignedDoctorId.errors %}<div class="invalid-feedback d-block small">{{ e }}</div>{% endfor %}
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-brand rounded-pill fw-semibold py-2">
+              Admit
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-brand{
+    background: linear-gradient(90deg, #0d6efd 0%, #0b5ed7 100%);
+  }
+  .btn-brand{
+    background: linear-gradient(90deg, #0d6efd 0%, #0b5ed7 100%);
+    color:#fff;
+    transition: filter .2s ease-in-out;
+  }
+  .btn-brand:hover{ filter: brightness(0.95); color:#fff; }
+  .icon-badge{
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.15);
+    font-size: 1.25rem;
+  }
+  .form-control{ font-size: .9rem; }
+</style>
+
+{% endblock content %}

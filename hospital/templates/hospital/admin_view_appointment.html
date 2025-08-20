@@ -1,0 +1,65 @@
+{% extends 'hospital/admin_base.html' %}
+{% block content %}
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+      <div class="card shadow rounded-4 overflow-hidden">
+
+        <!-- Header -->
+        <div class="bg-brand text-white p-4 d-flex align-items-center gap-3">
+          <div class="icon-badge d-flex align-items-center justify-content-center">
+            <i class="fa-solid fa-calendar-week" aria-hidden="true"></i>
+          </div>
+          <div>
+            <h5 class="mb-0 fw-semibold">All Appointments</h5>
+            <small class="opacity-75">Overview of scheduled visits</small>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="p-3">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle table-sm mb-0">
+              <thead class="bg-light small table-head">
+                <tr>
+                  <th class="text-muted fw-semibold">Doctor</th>
+                  <th class="text-muted fw-semibold">Patient</th>
+                  <th class="text-muted fw-semibold">Description</th>
+                  <th class="text-muted fw-semibold">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for a in appointments %}
+                <tr>
+                  <td class="small">{{ a.doctorName }}</td>
+                  <td class="small">{{ a.patientName }}</td>
+                  <td class="small text-ellipsis" title="{{ a.description }}">{{ a.description }}</td>
+                  <td class="small nowrap">{{ a.appointmentDate }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center text-muted small py-4">No appointments found.</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-brand{ background: linear-gradient(90deg, #0d6efd 0%, #0b5ed7 100%); }
+  .icon-badge{ width:40px; height:40px; border-radius:50%; background: rgba(255,255,255,.15); color:#fff; font-size:1rem; }
+  .text-ellipsis{ max-width: clamp(260px, 40vw, 520px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nowrap{ white-space: nowrap; }
+  .table thead.table-head th{ border-bottom: 1px solid rgba(13,110,253,.15); }
+  .table tbody td{ border-top: 1px solid rgba(0,0,0,.06); }
+  .table tbody tr:hover td{ background: rgba(13,110,253,.03); }
+</style>
+
+{% endblock content %}

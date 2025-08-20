@@ -1,0 +1,96 @@
+{% extends "hospital/admin_base.html" %}
+{% load static %}
+
+{% block admin_page_title %}Doctors{% endblock %}
+{% block admin_heading %}Doctors{% endblock %}
+{% block admin_subheading %}Browse, update or remove registered doctors{% endblock %}
+
+{% block admin_actions %}
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{% url 'admin-view-doctor-specialisation' %}">
+      <i class="fa-solid fa-filter me-2"></i>By Specialisation
+    </a>
+    <a class="btn btn-primary" href="{% url 'admin-add-doctor' %}">
+      <i class="fa-solid fa-user-plus me-2"></i>Add Doctor
+    </a>
+  </div>
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- Top bar: search + count -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+  <form method="get" action="{% url 'admin-view-doctor' %}" class="d-flex gap-2 w-100 w-md-auto">
+    <input name="q" type="search" value="{{ request.GET.q }}" class="form-control" placeholder="Search name, department, phone…">
+    <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass me-2"></i>Search</button>
+  </form>
+  <div class="text-muted small">
+    {% if doctors %}
+      {{ doctors|length }} result{{ doctors|length|pluralize }}
+    {% else %}
+      0 results
+    {% endif %}
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table align-middle mb-0">
+    <thead>
+      <tr class="text-muted">
+        <th scope="col">Doctor</th>
+        <th scope="col">Specialisation</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Status</th>
+        <th scope="col" class="text-end">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if doctors %}
+        {% for d in doctors %}
+          <tr>
+            <td class="fw-semibold">
+              {{ d.get_name|default:d.name|default:d.user.get_full_name|default:d }}
+              {% if d.user and d.user.email %}
+                <div class="small text-muted">{{ d.user.email }}</div>
+              {% endif %}
+            </td>
+            <td>
+              {{ d.department|default:d.specialist|default:d.specialisation|default:"—" }}
+            </td>
+            <td>
+              {{ d.mobile|default:d.phone|default:"—" }}
+            </td>
+            <td>
+              {% if d.status %}
+                <span class="badge text-bg-success">Approved</span>
+              {% else %}
+                <span class="badge text-bg-warning">Pending</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-outline-secondary" href="{% url 'update-doctor' d.id %}">
+                  <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                </a>
+                <a class="btn btn-outline-danger" href="{% url 'delete-doctor-from-hospital' d.id %}"
+                   onclick="return confirm('Remove this doctor?');">
+                  <i class="fa-regular fa-trash-can me-1"></i> Delete
+                </a>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted py-5">
+            <i class="fa-regular fa-face-smile-beam fa-2xl d-block mb-3"></i>
+            No doctors found. Try a different search or
+            <a href="{% url 'admin-add-doctor' %}">add a new doctor</a>.
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

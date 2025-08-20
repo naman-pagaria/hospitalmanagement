@@ -1,0 +1,16 @@
+{% extends "hospital/login_signup_base.html" %}
+{% block title %}Doctor Login{% endblock %}
+
+{% block content %}
+<h2 class="text-center"><i class="fas fa-user-md me-2 text-success"></i>Doctor Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <div class="d-grid mt-3">
+    <button type="submit" class="btn btn-success">Login</button>
+  </div>
+</form>
+<div class="text-center mt-3">
+  <small>Don't have an account? <a href="{% url 'doctorsignup' %}">Sign up</a></small>
+</div>
+{% endblock %}

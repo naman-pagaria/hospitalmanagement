@@ -1,0 +1,63 @@
+{% load static %}
+
+<!-- Doctor Dashboard – Summary Cards (clickable) -->
+<div class="row g-3">
+
+  <!-- Appointments for you -->
+  <div class="col-12 col-md-4">
+    <a href="{% url 'doctor-view-appointment' %}" class="text-reset text-decoration-none d-block">
+      <div class="card shadow-sm h-100 rounded-4 border-0 hover-lift cursor-pointer">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10" style="width:50px;height:50px;">
+            <i class="fa-solid fa-calendar-check text-primary fs-5"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Appointments For You</div>
+            <div class="fw-semibold" style="font-size: 1.25rem;">{{ appointmentcount|default:0 }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Patients under you -->
+  <div class="col-12 col-md-4">
+    <a href="{% url 'doctor-view-patient' %}" class="text-reset text-decoration-none d-block">
+      <div class="card shadow-sm h-100 rounded-4 border-0 hover-lift cursor-pointer">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10" style="width:50px;height:50px;">
+            <i class="fa-solid fa-user-group text-primary fs-5"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Patients Under You</div>
+            <div class="fw-semibold" style="font-size: 1.25rem;">{{ patientcount|default:0 }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Your patients discharged -->
+  <div class="col-12 col-md-4">
+    <a href="{% url 'doctor-view-discharge-patient' %}" class="text-reset text-decoration-none d-block">
+      <div class="card shadow-sm h-100 rounded-4 border-0 hover-lift cursor-pointer">
+        <div class="card-body d-flex align-items-center gap-3">
+          <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10" style="width:50px;height:50px;">
+            <i class="fa-solid fa-circle-check text-primary fs-5"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Your Patients Discharged</div>
+            <div class="fw-semibold" style="font-size: 1.25rem;">{{ patientdischarged|default:0 }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<style>
+.hover-lift { transition: transform .2s ease, box-shadow .2s ease; }
+.hover-lift:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.08)!important; }
+.cursor-pointer { cursor: pointer; }
+</style>

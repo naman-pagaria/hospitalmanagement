@@ -1,0 +1,44 @@
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card p-3 h-100">
+      <div class="text-muted small">Doctors</div>
+      <div class="h4 m-0">
+        {% if doctorcount %}{{ doctorcount }}
+        {% elif doctors %}{{ doctors|length }}
+        {% else %}—{% endif %}
+      </div>
+      <a href="{% url 'admin-view-doctor' %}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3 h-100">
+      <div class="text-muted small">Patients</div>
+      <div class="h4 m-0">
+        {% if patientcount %}{{ patientcount }}
+        {% elif patients %}{{ patients|length }}
+        {% else %}—{% endif %}
+      </div>
+      <a href="{% url 'admin-view-patient' %}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3 h-100">
+      <div class="text-muted small">Appointments</div>
+      <div class="h4 m-0">
+        {% if appointmentcount %}{{ appointmentcount }}
+        {% elif appointments %}{{ appointments|length }}
+        {% else %}—{% endif %}
+      </div>
+      <a href="{% url 'admin-view-appointment' %}" class="stretched-link"></a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card p-3 h-100">
+      <div class="text-muted small">Discharged</div>
+      <div class="h4 m-0">
+        {% if dischargedcount %}{{ dischargedcount }}{% else %}—{% endif %}
+      </div>
+      <a href="{% url 'admin-discharge-patient' %}" class="stretched-link"></a>
+    </div>
+  </div>
+</div>
